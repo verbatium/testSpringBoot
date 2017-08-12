@@ -1,4 +1,4 @@
-package ee.valja7.experiment.springboot.hello;
+package ee.valja7.experiment.springboot.hello.persistence.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

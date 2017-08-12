@@ -1,4 +1,4 @@
-package ee.valja7.experiment.springboot.hello;
+package ee.valja7.experiment.springboot.hello.persistence.config;
 
 import liquibase.integration.spring.SpringLiquibase;
 import oracle.ucp.jdbc.PoolDataSource;

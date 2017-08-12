@@ -1,4 +1,4 @@
-package ee.valja7.experiment.springboot.hello;
+package ee.valja7.experiment.springboot.hello.persistence;
 
 import org.mindrot.jbcrypt.BCrypt;
 

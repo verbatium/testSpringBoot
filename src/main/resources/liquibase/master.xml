@@ -22,4 +22,22 @@
             </delete>
         </rollback>
     </changeSet>
+    <changeSet id="3" author="valerik">
+        <createTable tableName="Books">
+            <column name="id" type="int" autoIncrement="false">
+                <constraints  primaryKey="true"
+                              primaryKeyName="PK_books" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(60)"/>
+            <column name="price" type="float"/>
+            <column name="description" type="VARCHAR(512)"/>
+            <column name="pageCount" type="integer"/>
+            <column name="illustrations" type="boolean"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="valerik">
+        <addAutoIncrement tableName="Books" columnName="id"
+                          columnDataType="int"
+                          startWith="1" incrementBy="1"/>
+    </changeSet>
 </databaseChangeLog>
