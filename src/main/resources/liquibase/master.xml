@@ -1,0 +1,25 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1" author="valerik">
+        <createTable tableName="Users">
+            <column name="UserName" type="VARCHAR(20)">
+                <constraints primaryKey="true" primaryKeyName="PK_username"/>
+            </column>
+            <column name="password" type="VARCHAR(60)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="valerik">
+        <insert tableName="Users">
+            <column name="UserName" value="Admin"/>
+            <column name="password" value="$2a$12$VAIX5dKNTPFpgpnS1Oq6kOBOrChShdD8hhXerp8rEu5DzNEBKrX/i"/>
+        </insert>
+        <rollback>
+            <delete tableName="Users">
+                <where>Username='Admin'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
