@@ -1,5 +1,7 @@
 package ee.valja7.experiment.springboot.hello;
 
+import ee.valja7.experiment.springboot.hello.persistence.config.DatabaseConfiguration;
+import ee.valja7.experiment.springboot.hello.view.SecurityConfig;
 import org.ocpsoft.rewrite.servlet.RewriteFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.DispatcherType;
@@ -23,6 +26,7 @@ import java.util.EnumSet;
 
 @EnableAutoConfiguration
 @ComponentScan({"ee.valja7.experiment.springboot.hello"})
+@Import({Initializer.class, DatabaseConfiguration.class, SecurityConfig.class})
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
@@ -56,6 +60,7 @@ public class Application extends SpringBootServletInitializer {
     public ServletRegistrationBean servletRegistrationBean() {
         FacesServlet servlet = new FacesServlet();
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "*.jsf");
+        servletRegistrationBean.addUrlMappings("*.xhtml");
         return servletRegistrationBean;
     }
 
