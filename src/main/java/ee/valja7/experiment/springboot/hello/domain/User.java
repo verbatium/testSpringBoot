@@ -1,5 +1,6 @@
 package ee.valja7.experiment.springboot.hello.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     private String username;
+    @NotEmpty(message = "*Please provide your password")
     private String password;
     @Transient
     private Boolean accountNonExpired = true;

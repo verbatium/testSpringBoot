@@ -1,20 +1,41 @@
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-    <title>Spring 4 Security + JSF 2 + PrimeFaces 5 Integration Example</title>
+    <title>login</title>
 </h:head>
 <h:body>
-    <h3>Spring 4 Security + JSF 2 + PrimeFaces 5 Integration Example</h3>
-    <font color="red">
-        <h:outputLabel value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>
-    </font>
-    <form action="${request.contextPath}/appLogin" method="POST">
-        <h:outputLabel value="Enter UserName:"/>
-        <input type="text" name="app_username"/><br/><br/>
-        <h:outputLabel value="Enter Password:"/>
-        <input type="password" name="app_password"/> <br/><br/>
-        <input type="submit" value="Login"/>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
+
+    <div class="ui-grid ui-grid-responsive">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-3"></div>
+            <div class="ui-grid-col-6"><p:spacer/></div>
+            <div class="ui-grid-col-3"></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-3"></div>
+            <div class="ui-grid-col-6">
+                <h:outputLabel style="color:red" value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>
+                <h:form id="form1" prependId="false">
+                    <p:panel header="Login" style="width: 360px;">
+                        <h:panelGrid id="loginPanel0" columns="2">
+                            <h:outputText value="Username"/>
+                            <p:inputText id="app_username"/>
+                            <h:outputText value="Password"/>
+                            <p:password id="app_password"/>
+                            <p:spacer/>
+                            <p:commandButton action="#{loginController.doLogin}"
+                                             value="Login"
+                                             type="submit"
+                                             ajax="false"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </div>
+            <div class="ui-grid-col-3"></div>
+
+        </div>
+    </div>
 </h:body>
 </html>

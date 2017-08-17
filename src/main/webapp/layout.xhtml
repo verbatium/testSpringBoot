@@ -9,23 +9,16 @@
 <f:view>
     <h:head>
         <title><ui:insert name="title">Default title</ui:insert></title>
-        <form action="${request.contextPath}/appLogout" method="POST">
-            <input type="submit" value="Logout"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
+        <h:form id="formLogout" prependId="false">
+
+        </h:form>
         <h:form>
 
-            <h:panelGrid columns="2" cellpadding="10">
-                <p:outputLabel for="basic" value="Basic:"/>
-                <p:themeSwitcher id="basic" style="width:165px">
-                    <f:selectItem itemLabel="Choose Theme"
-                                  itemValue=""/>
-                    <f:selectItems value="#{themeSwitcherView.themes}" var="theme"
-                                   itemLabel="#{theme.displayName}"
-                                   itemValue="#{theme.name}"/>
-                </p:themeSwitcher>
-
-                <p:outputLabel for="advanced" value="Advanced:"/>
+            <h:panelGrid columns="3" cellpadding="10">
+                <p:commandButton action="#{loginController.doLogout}"
+                                 value="Logout"
+                                 type="submit"
+                                 ajax="false"/>
                 <p:themeSwitcher id="advanced" style="width:165px"
                                  effect="fade" var="t">
                     <f:selectItem itemLabel="Choose Theme" itemValue=""/>
@@ -41,14 +34,11 @@
                         #{t.name}
                     </p:column>
                 </p:themeSwitcher>
+                <p:link value="Main page" outcome="index.xhtml"/>
             </h:panelGrid>
-
-            <p:separator/>
-
         </h:form>
     </h:head>
     <h:body>
-        <p:link value="Create a book" outcome="index.xhtml"/>
         <div class="ui-grid ui-grid-responsive">
             <div class="ui-grid-row">
                 <div class="ui-grid-col-3"></div>

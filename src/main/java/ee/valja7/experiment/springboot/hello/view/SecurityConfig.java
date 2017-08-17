@@ -40,15 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("hasRole('ROLE_ADMIN')")
                 .and()
                 .formLogin().  //login configuration
-                loginPage("/customLogin.xhtml").permitAll()
-                .loginProcessingUrl("/appLogin")
+                loginPage("/appLogin").permitAll()
+                .loginProcessingUrl("/appLogin").permitAll()
                 .usernameParameter("app_username")
                 .passwordParameter("app_password")
-                .defaultSuccessUrl("/index.xhtml")
+                .defaultSuccessUrl("/")
                 .and().logout().    //logout configuration
                 logoutUrl("/appLogout").
-                logoutSuccessUrl("/customLogin.xhtml").permitAll();
-
+                logoutSuccessUrl("/appLogin").permitAll();
+        http.csrf().disable();
     }
 
     @Bean
