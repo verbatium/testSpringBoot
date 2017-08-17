@@ -9,8 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +28,8 @@ import java.util.EnumSet;
 
 @EnableAutoConfiguration
 @ComponentScan({"ee.valja7.experiment.springboot.hello"})
+@EntityScan
+@ServletComponentScan
 @Import({Initializer.class, DatabaseConfiguration.class, SecurityConfig.class})
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {

@@ -12,7 +12,7 @@ public class Initializer implements ServletContextInitializer {
     @Override
     public void onStartup(ServletContext sc) throws ServletException {
         sc.setInitParameter("primefaces.CLIENT_SIDE_VALIDATION", "true");
-        sc.setInitParameter("primefaces.THEME", "bootstrap");
+        //sc.setInitParameter("primefaces.THEME", "#{loggedInUser.preferences.theme}");
         sc.setInitParameter("javax.faces.PROJECT_STAGE", "Development");
         sc.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
     }
