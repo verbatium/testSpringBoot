@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Transient
     private Boolean enabled = true;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "UserAuthorities", joinColumns = {
             @JoinColumn(name = "username")},
             inverseJoinColumns = {@JoinColumn(name = "authority",
