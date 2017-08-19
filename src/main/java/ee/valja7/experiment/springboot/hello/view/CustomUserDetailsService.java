@@ -24,4 +24,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.getAuthorities().size();
         return user;
     }
+
 }

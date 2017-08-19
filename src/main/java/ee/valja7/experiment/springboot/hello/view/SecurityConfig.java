@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 
 @Configuration
@@ -34,20 +37,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         LOGGER.info("Configure");
         http.authorizeRequests()
-                .antMatchers("/resources/**", "/javax.faces.resource/**")
-                .permitAll()
-                .antMatchers("/**")
-                .access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/resources/**", "/javax.faces.resource/**").permitAll()
+                .anyRequest().authenticated()
+                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .and()
-                .formLogin().  //login configuration
-                loginPage("/appLogin").permitAll()
+                .formLogin()  //login configuration
+                .loginPage("/appLogin").permitAll()
                 .loginProcessingUrl("/appLogin").permitAll()
                 .usernameParameter("app_username")
                 .passwordParameter("app_password")
                 .defaultSuccessUrl("/")
-                .and().logout().    //logout configuration
-                logoutUrl("/appLogout").
-                logoutSuccessUrl("/appLogin").permitAll();
+                .failureForwardUrl("/appLogin")
+                .successHandler(loginSuccessHandler())
+                .failureHandler(failureHandler())
+                .and().logout()    //logout configuration
+                .logoutUrl("/appLogout")
+                .logoutSuccessUrl("/appLogin").permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler())
+        ;
+
         http.csrf().disable();
     }
 
@@ -59,5 +67,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
+    }
+
+    //our beans for handlers
+    @Bean
+    public SimpleUrlLogoutSuccessHandler logoutSuccessHandler() {
+        return new LogoutSuccessHandler();
+    }
+
+    @Bean
+    public SimpleUrlAuthenticationSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    public SimpleUrlAuthenticationFailureHandler failureHandler() {
+        return new LoginFailureHandler();
     }
 }

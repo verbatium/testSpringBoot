@@ -28,5 +28,4 @@ public class LoginController {
         dispatcher.forward((ServletRequest) context.getRequest(), (ServletResponse) context.getResponse());
         FacesContext.getCurrentInstance().responseComplete();
     }
-
 }

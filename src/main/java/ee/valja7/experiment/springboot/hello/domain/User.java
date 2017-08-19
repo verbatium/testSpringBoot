@@ -15,6 +15,8 @@ public class User implements UserDetails {
     private String username;
     @NotEmpty(message = "*Please provide your password")
     private String password;
+
+
     @Transient
     private Boolean accountNonExpired = true;
     @Transient

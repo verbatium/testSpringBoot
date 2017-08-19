@@ -86,4 +86,21 @@
                                  referencedTableName="Authorities"
                                  referencedColumnNames="authority"/>
     </changeSet>
+    <changeSet id="10" author="valerik">
+        <addColumn tableName="Books">
+            <column name="createdBy" type="VARCHAR(20)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="11" author="valerik">
+        <addColumn tableName="Books">
+            <column name="lastModifiedBy" type="VARCHAR(20)"/>
+            <column name="createdDate" type="timestamp"/>
+            <column name="lastModifiedDate" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="12" author="valerik">
+        <addColumn tableName="Books">
+            <column name="version" type="integer"></column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

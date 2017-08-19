@@ -9,41 +9,87 @@
 <f:view>
     <h:head>
         <title><ui:insert name="title">Default title</ui:insert></title>
-        <h:form id="formLogout" prependId="false">
-
-        </h:form>
-        <h:form>
-
-            <h:panelGrid columns="3" cellpadding="10">
-                <p:commandButton action="#{loginController.doLogout}"
-                                 value="Logout"
-                                 type="submit"
-                                 ajax="false"/>
-                <p:themeSwitcher id="advanced" style="width:165px"
-                                 effect="fade" var="t">
-                    <f:selectItem itemLabel="Choose Theme" itemValue=""/>
-                    <f:selectItems value="#{themeSwitcherView.themes}"
-                                   var="theme"
-                                   itemLabel=""
-                                   itemValue="#{theme}"/>
-
-                    <p:column>
-                        #{t.id}
-                    </p:column>
-                    <p:column>
-                        #{t.name}
-                    </p:column>
-                </p:themeSwitcher>
-                <p:link value="Main page" outcome="index.xhtml"/>
-            </h:panelGrid>
-        </h:form>
     </h:head>
     <h:body>
+        <h:form id="loginForm"/>
+        <h:form>
+            <p:growl id="messages"/>
+
+            <p:menubar>
+                <p:submenu label="File" icon="ui-icon-document">
+                    <p:submenu label="New" icon="ui-icon-contact">
+                        <p:menuitem value="Project" url="#"/>
+                        <p:menuitem value="Other" url="#"/>
+                    </p:submenu>
+                    <p:menuitem value="Open" url="#"/>
+                    <p:separator/>
+                    <p:menuitem value="Quit" url="#"/>
+                </p:submenu>
+
+                <p:submenu label="Edit" icon="ui-icon-pencil">
+                    <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w"/>
+                    <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e"/>
+                </p:submenu>
+
+                <p:submenu label="Help" icon="ui-icon-help">
+                    <p:menuitem value="Contents" url="/index.xhtml"/>
+                    <p:submenu label="Search" icon="ui-icon-search">
+                        <p:submenu label="Text">
+                            <p:menuitem value="Workspace" url="#"/>
+                        </p:submenu>
+                        <p:menuitem value="File" url="#"/>
+                    </p:submenu>
+                    <p:submenu label="Themes">
+                        <p:menuitem>
+                            <p:themeSwitcher id="advanced" style="width:165px"
+                                             effect="fade" var="t">
+                                <f:selectItem itemLabel="Choose Theme" itemValue=""/>
+                                <f:selectItems value="#{themeSwitcherView.themes}"
+                                               var="theme"
+                                               itemLabel=""
+                                               itemValue="#{theme}"/>
+
+                                <p:column>
+                                    #{t.id}
+                                </p:column>
+                                <p:column>
+                                    #{t.name}
+                                </p:column>
+                            </p:themeSwitcher>
+                        </p:menuitem>
+                    </p:submenu>
+                </p:submenu>
+
+                <p:submenu label="Actions" icon="ui-icon-gear">
+                    <p:submenu label="Ajax" icon="ui-icon-refresh">
+                        <p:menuitem value="Save" icon="ui-icon-disk" update="messages"/>
+                        <p:menuitem value="Update" icon="ui-icon-arrowrefresh-1-w" update="messages"/>
+                    </p:submenu>
+                    <p:submenu label="Non-Ajax" icon="ui-icon-newwin">
+                        <p:menuitem value="Delete" icon="ui-icon-close" update="messages" ajax="false"/>
+                    </p:submenu>
+                </p:submenu>
+
+                <p:menuitem value="Quit" url="http://www.primefaces.org" icon="ui-icon-close"/>
+
+                <f:facet name="options">
+                    <p:inputText style="margin-right:10px" placeholder="Search"/>
+                    <p:commandButton type="submit"
+                                     value="Search"
+                                     icon="ui-icon-search"
+                                     ajax="false"/>
+                    <p:commandButton type="submit"
+                                     value="Logout"
+                                     icon="ui-icon-extlink"
+                                     ajax="false"
+                                     form="loginForm"
+                                     action="#{loginController.doLogout}"/>
+                </f:facet>
+            </p:menubar>
+        </h:form>
         <div class="ui-grid ui-grid-responsive">
             <div class="ui-grid-row">
-                <div class="ui-grid-col-3"></div>
-                <div class="ui-grid-col-6"></div>
-                <div class="ui-grid-col-3"></div>
+
             </div>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-3"></div>
