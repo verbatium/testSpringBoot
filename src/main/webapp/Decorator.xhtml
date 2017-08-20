@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="en">
+    <h:head>
+        <title><ui:insert name="title">modelN jsf web</ui:insert></title>
+        <style type="text/css">
+            .ui-layout-north {
+                z-index: 20 !important;
+                overflow: visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow: visible !important;
+            }
+
+            body {
+                background-color: #FFFFFF;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true" id="layout">
+            <p:layoutUnit header="Administration"
+                          position="north"
+                          resizable="false"
+                          collapsible="false">
+                <ui:include src="/menu.xhtml"/>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <ui:insert name="body">Welcome <a
+                        href="#">body</a>.</ui:insert>
+            </p:layoutUnit>
+            <p:layoutUnit position="south" size="120"
+                          header="Disclaimer"
+                          resizable="true"
+                          closable="true"
+                          collapsible="true"><br/>
+                <h:outputText value="This is a sample website "/>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</f:view>
+</html>

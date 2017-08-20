@@ -1,6 +1,8 @@
 package ee.valja7.experiment.springboot.hello.domain;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.mindrot.jbcrypt.BCrypt;
+import org.ocpsoft.common.util.Strings;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -72,6 +74,9 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if (!Strings.isNullOrEmpty(password)) {
+            String hashpw = BCrypt.hashpw(password, BCrypt.gensalt(12));
+            this.password = hashpw;
+        }
     }
 }

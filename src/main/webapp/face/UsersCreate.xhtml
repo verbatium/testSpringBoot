@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<ui:composition template="../Decorator.xhtml">
+    <f:metadata>
+        <f:viewParam name="id" value="#{userModel.currentItemId}"/>
+        <f:viewAction action="#{userModel.init()}"/>
+    </f:metadata>
+    <ui:define name="title">create User</ui:define>
+    <ui:define name="heading">create</ui:define>
+    <ui:define name="body">
+        <h:form>
+            <p:panel id="createPnl"
+                     header="users"
+                     toggleable="true"
+                     closable="false"
+                     toggleSpeed="500"
+                     onCloseUpdate="growl"
+                     closeSpeed="2000"
+                     onToggleUpdate="growl"
+                     widgetVar="panel">
+                <h:panelGrid columns="3"
+                             cellpadding="10">
+
+                    <p:outputLabel>username *</p:outputLabel>
+                    <p:inputText size="20" maxlength="20"
+                                 label="Username" id="lblUsername-#{idValue}"
+                                 value="#{userModel.currentItem.username}"
+                                 required="true"/>
+                    <p:message for="lblUsername-#{idValue}"/>
+
+                    <p:outputLabel>password</p:outputLabel>
+                    <p:inputText size="40" maxlength="60"
+                                 label="Password" id="lblPassword-#{idValue}"
+                                 value="#{userModel.currentItem.password}"
+                                 required="false"/>
+                    <p:message for="lblPassword-#{idValue}"/>
+                    <p:commandButton title="save" value="save"
+                                     update="createPnl"
+                                     action="#{userModel.create()}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

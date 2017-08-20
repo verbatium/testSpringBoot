@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui">
+<p:outputLabel> </p:outputLabel>
+<p:outputLabel> </p:outputLabel>
+<p:outputLabel>username *</p:outputLabel>
+<p:inputText size="20"
+             maxlength="20"
+             label="Username"
+             id="lblUsername-#{idValue}"
+             value="#{userModel.currentItem.username}"
+             required="true"/>
+<p:message for="lblUsername-#{idValue}"/>
+
+<p:outputLabel>password</p:outputLabel>
+<p:inputText size="40" maxlength="60"
+             label="Password" id="lblPassword-#{idValue}"
+             value="#{userModel.currentItem.password}"
+             required="false"/>
+<p:message for="lblPassword-#{idValue}"/>
+<p:outputLabel> </p:outputLabel>
+<p:outputLabel> </p:outputLabel>
+</html>

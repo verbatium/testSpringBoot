@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<p:column sortBy="#{item.username}"
+          filterBy="#{item.username}">
+    <f:facet name="header">
+        <h:outputText value="username"/>
+    </f:facet>
+    <h:outputText value="#{item.username}"/>
+</p:column>
+<p:column sortBy="#{item.password}"
+          filterBy="#{item.password}">
+    <f:facet name="header">
+        <h:outputText value="password"/>
+    </f:facet>
+    <h:outputText value="#{item.password}"/>
+</p:column>
+</html>

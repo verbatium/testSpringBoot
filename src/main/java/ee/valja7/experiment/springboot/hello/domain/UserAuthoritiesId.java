@@ -1,15 +1,9 @@
 package ee.valja7.experiment.springboot.hello.domain;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 public class UserAuthoritiesId implements Serializable {
-    @ManyToOne
-    @JoinColumn(name = "username")
     User user;
-    @ManyToOne
-    @JoinColumn(name = "authority")
     Authority authority;
 
     public User getUser() {

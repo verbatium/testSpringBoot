@@ -1,0 +1,177 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<p:panelGrid columns="2">
+    <h:panelGroup>
+        <h:form id="formUsers">
+            <p:growl id="growl"
+                     showDetail="true"/>
+            <h:panelGroup id="dataPanel">
+                <p:dataTable value="#{userModel.lazyModel}"
+                             id="usersTable"
+                             var="item"
+                             paginator="true"
+                             rows="10"
+                             lazy="true"
+                             paginatorPosition="bottom"
+                             resizableColumns="true"
+                             selection="#{userModel.currentItem}"
+                             selectionMode="single"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,20,50"
+                             emptyMessage="dataTableEmptyMessagePart1 Users dataTableEmptyMessagePart2">
+                    <p:ajax partialSubmit="true" event="rowSelect"
+                            listener="#{userModel.onRowSelect}"
+                            update=":form2:panel :form2:childrenTab"/>
+                    <f:facet name="header">
+                        list of userses
+                    </f:facet>
+                    <ui:include src="UsersListRow.xhtml">
+                        <ui:param name="isSemanticReference" value="false"/>
+                    </ui:include>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+        <p:confirmDialog id="confirmDialog" showEffect="fade" hideEffect="fade" global="true">
+            <h:form id="deletion">
+                <p:commandButton id="confirm"
+                                 value="yes"
+                                 immediate="true"
+                                 styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check"
+                                 actionListener="#{userModel.deleteListener}"
+                                 update=":formUsers:usersTable,:form2:panel,:form2:childrenTab,:formUsers:growl"/>
+                <p:commandButton id="decline" value="no" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </h:form>
+        </p:confirmDialog>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:form id="form2">
+            <p:panelGrid columns="3" id="panel" cellpadding="5" styleClass="ui-widget-content-borderless"
+                         columnClasses="mp-column-center">
+                <f:facet name="header" align="left">
+                    <h:outputText value="User details"/>
+                    <p:commandButton value="Save" icon="ui-icon-disk"
+                                     actionListener="#{userModel.createOrUpdateListener()}"
+                                     update=":formUsers:usersTable,:form2:panel,:form2:childrenTab,:formUsers:growl"/>
+                    <p:commandButton value="clear" immediate="true" icon="ui-icon-cancel" process="@this"
+                                     actionListener="#{userModel.clearListener()}"
+                                     update=":form2:panel,:form2:childrenTab"
+                                     style="margin:5px;"/>
+                    <p:commandButton value="delete" icon="ui-icon-trash">
+                        <p:confirm header="deletion Process" severity="alert" icon="ui-icon-alert"
+                                   message="Are myou sure want to delete user?"/>
+                    </p:commandButton>
+                </f:facet>
+                <ui:include src="UsersEdit.xhtml">
+                    <ui:param name="affectFormId" value=":form2"/>
+                    <ui:param name="idValue" value="1"/>
+                </ui:include>
+            </p:panelGrid>
+            <h:panelGrid id="childrenPanel">
+                <p:tabView id="childrenTab"
+                           orientation="top|bottom|left|right"
+                           cache="false">
+                    <p:ajax event="tabChange" listener="#{userModel.onTabChange}"/>
+                    <p:tab id="child-authoritiesViaUserauthoritiesByAuthority"
+                           title="Authorities">
+                        <p:outputPanel id="child-authoritiesViaUserauthoritiesByAuthorityPanel">
+                            <p:toolbar id="add-authoritiesViaUserauthoritiesByAuthority">
+                                <p:toolbarGroup align="left">
+                                    <p:commandButton
+                                            immediate="true"
+                                            value="associate"
+                                            title="associate Authorities"
+                                            icon="ui-icon-transfer-e-w"
+                                            oncomplete="PF('addAuthorities').show();"
+                                            update=":addAuthoritiesDialog">
+                                        <f:actionListener
+                                                binding="#{userModel.activateRenderAddAuthoritiesViaUserauthoritiesByAuthority()}"/>
+                                    </p:commandButton>
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:dataTable var="item"
+                                         value="#{userModel.authorities}"
+                                         paginator="true"
+                                         rows="10"
+                                         onRowSelectUpdate="display"
+                                         dynamic="true"
+                                         paginatorPosition="bottom"
+                                         resizableColumns="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15">
+                                <ui:include src="AuthoritiesListRow.xhtml">
+                                    <ui:param name="isSemanticReference"
+                                              value="true"/>
+                                </ui:include>
+                                <p:column>
+                                    <p:commandButton value="Delete association"
+                                                     id="detailButtonAuthoritiesViaUserauthoritiesByAuthority"
+                                                     title="Delete"
+                                                     update=":form2:childrenTab:child-authoritiesViaUserauthoritiesByAuthorityPanel,:formUsers:growl"
+                                                     action="#{userModel.disaffectAndDesactivateRenderAuthoritiesViaUserauthoritiesByAuthority}"
+                                                     process="@this">
+                                        <f:actionListener
+                                                binding="#{userModel.addAuthorityToUser(item)}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </p:tab>
+                </p:tabView>
+            </h:panelGrid>
+        </h:form>
+    </h:panelGroup>
+</p:panelGrid>
+
+<!-- dialog to add and manage AuthoritiesViaUserauthoritiesByAuthority -->
+<p:outputPanel id="addAuthoritiesDialog">
+    <p:dialog id="AddAuthDlg"
+              message="Can you select one item?"
+              rendered="#{userModel.showAddAuthoritiesDialog}"
+              header="Affectation process"
+              severity="alert"
+              widgetVar="addAuthorities"
+              resizable="true"
+              appendTo="@(body)">
+
+        <h:form id="frmAA">
+            <p:dataTable value="#{authorityModel.lazyModel}"
+                         var="item"
+                         paginator="true" rows="10"
+                         lazy="true"
+                         selection="#{authorityModel.currentItem}"
+                         selectionMode="single"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,20,50"
+                         emptyMessage="No Authorities found with given criteria">
+
+                <f:facet name="header">
+                    list Of user authorities
+                </f:facet>
+                <ui:include src="AuthoritiesListRow.xhtml">
+                    <ui:param name="isSemanticReference" value="false"/>
+                </ui:include>
+                <p:column>
+                    <p:commandButton value="affect"
+                                     id="cmdAddAuthoritiesViaUserauthoritiesByAuthority"
+                                     update=":form2:childrenTab:child-authoritiesViaUserauthoritiesByAuthorityPanel,:formUsers:growl"
+                                     action="#{userModel.affectAndDesactivateRenderAuthoritiesViaUserauthoritiesByAuthority}"
+                                     title="Affect"
+                                     onclick="PF('addAuthorities').hide()"
+                                     process="@this">
+                        <f:actionListener
+                                binding="#{userModel.addAuthorityToUser(item)}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </p:dialog>
+</p:outputPanel>
+
+</html>

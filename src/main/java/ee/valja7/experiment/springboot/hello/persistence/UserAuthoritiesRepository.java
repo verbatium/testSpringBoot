@@ -4,6 +4,7 @@ import ee.valja7.experiment.springboot.hello.domain.Authority;
 import ee.valja7.experiment.springboot.hello.domain.User;
 import ee.valja7.experiment.springboot.hello.domain.UserAuthorities;
 import ee.valja7.experiment.springboot.hello.domain.UserAuthoritiesId;
+import ee.valja7.experiment.springboot.hello.view.AuthorityView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,4 +14,6 @@ import java.util.List;
 public interface UserAuthoritiesRepository extends JpaRepository<UserAuthorities, UserAuthoritiesId> {
     @Query("select ua.authority from UserAuthorities ua where ua.user=:user")
     List<Authority> getAuthoritiesByUser(@Param("user") User user);
+
+    List<AuthorityView> findByUser(User user);
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition template="Decorator.xhtml">
+        <f:metadata>
+            <f:viewParam name="id" value="#{userModel.currentItemId}"/>
+            <f:viewAction action="#{userModel.init()}"/>
+        </f:metadata>
+        <ui:define name="title">User</ui:define>
+        <ui:define name="body">
+            <h:form>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="User name : "/>
+                    <p:inputText readonly="#{!userModel.isNew()}"
+                                 value="#{userModel.currentItem.username}"/>
+
+                    <p:outputLabel value="Password : "/>
+                    <p:password value="#{userModel.newPassword}"/>
+                    <p:outputLabel value="account Non Expired : "/>
+                    <h:selectBooleanCheckbox readonly="true" value="#{userModel.currentItem.accountNonExpired}"/>
+                    <p:outputLabel value="account Non Locked : "/>
+                    <h:selectBooleanCheckbox readonly="true" value="#{userModel.currentItem.accountNonLocked}" cols="16"
+                                             rows="3"/>
+                    <p:outputLabel value="enabled : "/>
+                    <h:selectBooleanCheckbox readonly="true" value="#{userModel.currentItem.enabled}"/>
+                    <p:outputLabel value="credentials Non Expired : "/>
+                    <h:selectBooleanCheckbox readonly="true" value="#{userModel.currentItem.credentialsNonExpired}"/>
+                </p:panelGrid>
+                <p:commandButton action="#{userModel.save('/users.xhtml')}"
+                                 value="Save"
+                                 type="submit"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</f:view>
+</html>

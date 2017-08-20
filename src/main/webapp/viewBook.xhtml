@@ -7,13 +7,13 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <f:view>
-    <ui:composition template="layout.xhtml">
+    <ui:composition template="Decorator.xhtml">
         <f:metadata>
             <f:viewParam name="id" value="#{model.currentBookId}"/>
             <f:viewAction action="#{model.doFindBookById()}"/>
         </f:metadata>
         <ui:define name="title">View a book</ui:define>
-        <ui:define name="content">
+        <ui:define name="body">
             <p:panelGrid columns="2">
                 <p:outputLabel value="Title : "/>
                 <h:outputText value="#{model.book.title}"/>
