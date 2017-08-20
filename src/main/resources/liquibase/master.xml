@@ -103,4 +103,10 @@
             <column name="version" type="integer"></column>
         </addColumn>
     </changeSet>
+    <changeSet id="13" author="valerik">
+        <update tableName="Books">
+            <column name="version" value="0"/>
+            <where>version is null</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>

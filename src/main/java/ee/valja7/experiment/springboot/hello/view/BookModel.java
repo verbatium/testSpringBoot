@@ -8,23 +8,35 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "model", eager = true)
 @RequestScoped
 public class BookModel {
 
-    public void setBook(BookView book) {
-        this.book = book;
+    @ManagedProperty(value = "#{bookRepository}")
+    BookRepository bookRepository;
+
+    public Long getCurrentBookId() {
+        return currentBookId;
     }
 
-    public BookView getBook() {
+    public void setCurrentBookId(Long id) {
+        this.currentBookId = id;
+    }
+
+    private Long currentBookId;
+
+    private Book book = new Book();
+
+
+    public Book getBook() {
         return book;
     }
 
-    @ManagedProperty(value = "#{book}")
-    private BookView book;
+    public void setBook(Book book) {
+        this.book = book;
+    }
 
     public BookRepository getBookRepository() {
         return bookRepository;
@@ -34,54 +46,24 @@ public class BookModel {
         this.bookRepository = bookRepository;
     }
 
-    @ManagedProperty(value = "#{bookRepository}")
-    BookRepository bookRepository;
-
     public String doCreateBook() {
-        Book created = new Book();
-        created.setId(this.book.getId());
-        created.setTitle(this.book.getTitle());
-        created.setPrice(this.book.getPrice());
-        created.setPageCount(this.book.getPageCount());
-        created.setDescription(this.book.getDescription());
-        Book newBook = this.bookRepository.save(created);
+        Book newBook = this.bookRepository.save(this.book);
 
         FacesContext.getCurrentInstance().addMessage("errors",
-            new FacesMessage(FacesMessage.SEVERITY_INFO, "Book created",
-                "The book " + created.getTitle() + " has been created with id=" + newBook.getId()));
-
-        this.book.setTitle("");
-        this.book.setPrice(null);
-        this.book.setDescription("");
-        this.book.setIllustrations(false);
-        this.book.setPageCount(null);
-
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Book created",
+                        "The book " + book.getTitle() + " has been created with id=" + newBook.getId()));
+        book = new Book();
         return "index.xhtml";
     }
 
     public void doFindBookById() {
-        Book found = bookRepository.findOne(this.book.getId());
-        this.book.setId(found.getId());
-        this.book.setTitle(found.getTitle());
-        this.book.setPrice(found.getPrice());
-        this.book.setPageCount(found.getPageCount());
-        this.book.setDescription(found.getDescription());
-        this.book.setDescription(found.getDescription());
+        book = bookRepository.findOne(currentBookId);
+        book.setIllustrations(!Boolean.TRUE.equals(book.getIllustrations()));
+        bookRepository.save(book);
     }
 
-    public List<BookView> findAllBooks() {
-        List<BookView> books = new ArrayList<BookView>();
-        for(Book entity : this.bookRepository.findAll()) {
-            BookView view = new BookView();
-            view.setId(entity.getId());
-            view.setTitle(entity.getTitle());
-            view.setPrice(entity.getPrice());
-            view.setPageCount(entity.getPageCount());
-            view.setDescription(entity.getDescription());
-            view.setDescription(entity.getDescription());
-            books.add(view);
-        }
-        return books;
+    public List<Book> findAllBooks() {
+        return this.bookRepository.findAll();
     }
 
 }

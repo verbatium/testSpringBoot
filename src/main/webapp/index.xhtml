@@ -13,15 +13,15 @@
             <p:fieldset legend="Create a New Book">
                 <h:panelGrid columns="2" border="0"  layout="grid" style="margin: 20px;">
                     <p:outputLabel value="Title : "/>
-                    <p:inputText id="title" value="#{book.title}" size=""/>
+                    <p:inputText id="title" value="#{model.book.title}" size=""/>
                     <p:outputLabel value="Price : "/>
-                    <p:inputText id="price" value="#{book.price}"/>
+                    <p:inputText id="price" value="#{model.book.price}"/>
                     <p:outputLabel value="Description : "/>
-                    <p:inputTextarea id="description" value="#{book.description}" cols="16" rows="3"/>
+                    <p:inputTextarea id="description" value="#{model.book.description}" cols="16" rows="3"/>
                     <p:outputLabel value="Number of pages : "/>
-                    <p:inputText id="nbop" value="#{book.pageCount}"/>
+                    <p:inputText id="nbop" value="#{model.book.pageCount}"/>
                     <p:outputLabel value="Illustrations : "/>
-                    <p:selectBooleanCheckbox id="ill" value="#{book.illustrations}"/>
+                    <p:selectBooleanCheckbox id="ill" value="#{model.book.illustrations}"/>
                 </h:panelGrid>
                 <p:commandButton value="Create a book" update="booklist,title,price,description,nbop,ill" actionListener="#{model.doCreateBook()}"/>
             </p:fieldset>

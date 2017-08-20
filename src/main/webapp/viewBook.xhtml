@@ -9,23 +9,29 @@
 <f:view>
     <ui:composition template="layout.xhtml">
         <f:metadata>
-            <f:viewParam name="id" value="#{model.book.id}"/>
+            <f:viewParam name="id" value="#{model.currentBookId}"/>
             <f:viewAction action="#{model.doFindBookById()}"/>
         </f:metadata>
         <ui:define name="title">View a book</ui:define>
         <ui:define name="content">
             <p:panelGrid columns="2">
                 <p:outputLabel value="Title : "/>
-                <h:outputText value="#{book.title}"/>
+                <h:outputText value="#{model.book.title}"/>
                 <p:outputLabel value="Price : "/>
-                <h:outputText value="#{book.price}"/>
+                <h:outputText value="#{model.book.price}"/>
                 <p:outputLabel value="Description : "/>
-                <h:outputText value="#{book.description}" cols="16" rows="3"/>
+                <h:outputText value="#{model.book.description}" cols="16" rows="3"/>
                 <p:outputLabel value="Number of pages : "/>
-                <h:outputText value="#{book.pageCount}"/>
+                <h:outputText value="#{model.book.pageCount}"/>
                 <p:outputLabel value="Illustrations : "/>
-                <h:selectBooleanCheckbox value="#{book.illustrations}"/>
-            </p:panelGrid>
+                <h:selectBooleanCheckbox value="#{model.book.illustrations}"/>
+                <p:outputLabel value="Version : "/>
+                <h:outputText value="#{model.book.version}"/>
+                <p:outputLabel value="Modifed By : "/>
+                <h:outputText value="#{model.book.lastModifiedDate} #{model.book.lastModifiedBy.username}"/>
+                <p:outputLabel value="Created : "/>
+                <h:outputText value="#{model.book.createdDate} #{model.book.createdBy.username}"/>
+            </p:panelGrid>w
         </ui:define>
     </ui:composition>
 </f:view>

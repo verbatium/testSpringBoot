@@ -8,9 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -27,6 +25,11 @@ public class AuditListener {
         object.setCreatedDate(now);
     }
 
+    @PostPersist
+    private void afterInsert(Auditable<User> object) {
+        LOGGER.info("new object saved {}", object);
+    }
+
     @PreUpdate
     private void beforeUpdate(Auditable<User> object) {
         User user = getCurrentUser();
@@ -34,6 +37,11 @@ public class AuditListener {
         Timestamp now = Timestamp.from(Instant.now());
         object.setLastModifiedBy(user);
         object.setLastModifiedDate(now);
+    }
+
+    @PostUpdate
+    private void afterUpdate(Auditable<User> object) {
+        LOGGER.info("{} Updated object after update: {}", object);
     }
 
     @PreRemove

@@ -1,11 +1,8 @@
 package ee.valja7.experiment.springboot.hello.domain;
 
-import ee.valja7.experiment.springboot.hello.AuditListener;
-
 import javax.persistence.*;
 
 @Entity
-@EntityListeners({AuditListener.class})
 @Table(name = "Books")
 public class Book extends Auditable<User> {
 
@@ -83,5 +80,18 @@ public class Book extends Auditable<User> {
 
     public void setIllustrations(Boolean illustrations) {
         this.illustrations = illustrations;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", pageCount=" + pageCount +
+                ", illustrations=" + illustrations +
+                ",Auditable=" + super.toString() +
+                '}';
     }
 }
