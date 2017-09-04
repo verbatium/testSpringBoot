@@ -100,7 +100,7 @@
     </changeSet>
     <changeSet id="12" author="valerik">
         <addColumn tableName="Books">
-            <column name="version" type="integer"></column>
+            <column name="version" type="integer"/>
         </addColumn>
     </changeSet>
     <changeSet id="13" author="valerik">
@@ -108,5 +108,25 @@
             <column name="version" value="0"/>
             <where>version is null</where>
         </update>
+    </changeSet>
+    <changeSet id="14" author="valerik">
+        <createTable tableName="BookHistory">
+            <column name="id" type="int" autoIncrement="false">
+                <constraints primaryKey="true"
+                             primaryKeyName="PK_booksHistory" nullable="false"/>
+            </column>
+            <column name="version" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(60)"/>
+            <column name="price" type="float"/>
+            <column name="description" type="VARCHAR(512)"/>
+            <column name="pageCount" type="integer"/>
+            <column name="illustrations" type="boolean"/>
+            <column name="createdBy" type="VARCHAR(20)"/>
+            <column name="createdDate" type="timestamp"/>
+            <column name="lastModifiedBy" type="VARCHAR(20)"/>
+            <column name="lastModifiedDate" type="timestamp"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

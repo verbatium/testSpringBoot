@@ -1,20 +1,26 @@
 package ee.valja7.experiment.springboot.hello;
 
-import ee.valja7.experiment.springboot.hello.domain.Auditable;
-import ee.valja7.experiment.springboot.hello.domain.User;
+import ee.valja7.experiment.springboot.hello.domain.*;
+import ee.valja7.experiment.springboot.hello.persistence.BookHistoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-
-public class AuditListener {
+public class AuditListener extends TransactionSynchronizationAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuditListener.class);
+
+    @Autowired
+    BookHistoryRepository bookHistoryRepository;
+    @PersistenceContext private EntityManager em;
+
 
     @PrePersist
     private void beforeInsert(Auditable<User> object) {
@@ -23,10 +29,12 @@ public class AuditListener {
         Timestamp now = Timestamp.from(Instant.now());
         object.setCreatedBy(user);
         object.setCreatedDate(now);
+
     }
 
     @PostPersist
     private void afterInsert(Auditable<User> object) {
+        saveHistory((IBook) object, object.getVersion());
         LOGGER.info("new object saved {}", object);
     }
 
@@ -37,10 +45,21 @@ public class AuditListener {
         Timestamp now = Timestamp.from(Instant.now());
         object.setLastModifiedBy(user);
         object.setLastModifiedDate(now);
+
+
+        saveHistory((IBook) object, object.getVersion() + 1);
+
+    }
+
+    private void saveHistory(IBook object, int version) {
+        BookHistory history = new BookHistory(object);
+        history.setVersion(version);
+        BookHistoryRepository bookHistoryRepository = BeanUtil.getBean(BookHistoryRepository.class);
+        bookHistoryRepository.save(history);
     }
 
     @PostUpdate
-    private void afterUpdate(Auditable<User> object) {
+    public void afterUpdate(Auditable<User> object) {
         LOGGER.info("{} Updated object after update: {}", object);
     }
 

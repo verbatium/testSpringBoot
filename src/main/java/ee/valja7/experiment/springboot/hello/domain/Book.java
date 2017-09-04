@@ -2,82 +2,86 @@ package ee.valja7.experiment.springboot.hello.domain;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name="Book")
 @Table(name = "Books")
-public class Book extends Auditable<User> {
-
-    @Id
-    @GeneratedValue
+public class Book extends Auditable<User> implements IBook
+{
     private Long id;
-    @Column(nullable = false)
     private String title;
-    @Column(nullable = true)
     private Float price;
-    @Column(nullable = true)
     private String description;
-    @Column(nullable = true)
     private Integer pageCount;
-    @Column(nullable = true)
     private Boolean illustrations;
+    protected Integer version;
+
+    @Version
+    @Column(name = "version")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Book() {
-        super();
     }
 
-    public Book(Book book) {
-        super(book);
-        this.id = book.id;
-        this.description = book.description;
-        this.illustrations = book.illustrations;
-        this.pageCount = book.pageCount;
-        this.price = book.price;
-        this.title = book.title;
+    public Book(IAuditable<User> original) {
+        super(original);
     }
 
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
+    @Override
+    @Column(nullable = false)
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @Override
+    @Column(nullable = true)
     public Float getPrice() {
         return price;
     }
-
     public void setPrice(Float price) {
         this.price = price;
     }
 
+    @Override
+    @Column(nullable = true)
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
+    @Column(nullable = true)
     public Integer getPageCount() {
         return pageCount;
     }
-
     public void setPageCount(Integer pageCount) {
         this.pageCount = pageCount;
     }
 
+    @Override
+    @Column(nullable = true)
     public Boolean getIllustrations() {
         return illustrations;
     }
-
     public void setIllustrations(Boolean illustrations) {
         this.illustrations = illustrations;
     }
@@ -91,7 +95,8 @@ public class Book extends Auditable<User> {
                 ", description='" + description + '\'' +
                 ", pageCount=" + pageCount +
                 ", illustrations=" + illustrations +
-                ",Auditable=" + super.toString() +
+                ", Version = " + version +
+                ", Auditable=" + super.toString() +
                 '}';
     }
 }
